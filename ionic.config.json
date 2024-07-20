@@ -1,0 +1,7 @@
+{
+  "name": "SomMedicose",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

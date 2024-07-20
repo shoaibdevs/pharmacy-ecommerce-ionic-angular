@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Login Page -->
+  <div class="container"  *ngIf="screen === 'signin'">
+    <h1 class="heading">👋 Welcome<br><br></h1>
+    <p class="para">Sign in to continue!</p>
+    <form [formGroup]="formData">
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Email Id</legend> 
+          <ion-input formControlName="email" type="email" placeholder="Enter Your Email Id"></ion-input>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Password</legend> 
+          <ion-input formControlName="password" type="password" placeholder="Enter Your Password"></ion-input>
+        </fieldset>
+      </ion-item>
+      <p class="forget-text"><a (click)="change('forget')">Forgot Password?</a></p>
+      <p class="signup-text">I'm a new user&nbsp;<a (click)="change('signup')">Sign Up?</a></p>
+      <ion-button class="login-button" (click)="login()" expand="block">Login</ion-button>
+    </form>
+  </div>
+
+  <!-- Sign up page -->
+  <div class="container"  *ngIf="screen === 'signup'">
+    <h1 class="heading">🚀 Create Account<br><br></h1>
+    <p class="para">Sign up to get started!</p>
+    <form [formGroup]="formData">
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Full Name</legend> 
+          <ion-input formControlName="name" type="text" placeholder="Enter Your Full Name"></ion-input>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Email Id</legend> 
+          <ion-input formControlName="email" type="email" placeholder="Enter Your Email Id"></ion-input>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Password</legend> 
+          <ion-input formControlName="password" type="password" placeholder="Enter Your Password"></ion-input>
+        </fieldset>
+      </ion-item>
+      <p class="signup-text">I'm already a member&nbsp;<a (click)="change('signin')">Sign In?</a></p>
+      <ion-button class="login-button" (click)="register()" expand="block">Sign Up</ion-button>
+    </form>
+  </div>
+
+  <!-- Forget password page -->
+  <div class="container"  *ngIf="screen === 'forget'">
+    <h1 class="heading">Forget Password?<br><br></h1>
+    <p class="para">Enter email to reset</p>
+    <ion-item lines="none" class="ion-item">
+      <fieldset  class="input-item">
+        <legend>Email Id</legend> 
+        <ion-input type="email" placeholder="Enter Your Email Id"></ion-input>
+      </fieldset>
+    </ion-item>
+    <p class="signup-text">Rememberd Password&nbsp;<a (click)="change('signin')">Sign In?</a></p>
+    <ion-button class="login-button" expand="block">Reset Password</ion-button>
+  </div>
+
+
+</ion-content>
+<ion-footer color="white">
+  <ion-toolbar>
+    <p class="copyright">Som Medicose</p>
+  </ion-toolbar>
+</ion-footer>
