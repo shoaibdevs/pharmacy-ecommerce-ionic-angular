@@ -4,6 +4,11 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/tabs/home',
+    pathMatch: 'full'
+  },
+  {
     path: 'tabs',
     component: TabsPage,
     children: [
@@ -24,9 +29,16 @@ const routes: Routes = [
         loadChildren: () => import('../pages/home/home.module').then(m => m.HomePageModule)
       },
       {
-        path: '',
-        redirectTo: '/tabs/tab1',
-        pathMatch: 'full'
+        path: 'category',
+        loadChildren: () => import('../pages/category/category.module').then(m => m.CategoryPageModule)
+      },
+      {
+        path: 'cart',
+        loadChildren: () => import('../pages/cart/cart.module').then(m => m.CartPageModule)
+      },
+      {
+        path: 'account',
+        loadChildren: () => import('../pages/account/account.module').then(m => m.AccountPageModule)
       }
     ]
   },

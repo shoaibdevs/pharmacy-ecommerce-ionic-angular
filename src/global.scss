@@ -35,3 +35,44 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+ion-content{
+    --background: #f1f0f0;
+}
+.margin-0{
+    margin: 0;
+}
+.font-bold {
+    font-weight: 600;
+}
+.padding-vertical-10 {
+    padding-top: 10px !important;
+    --padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    --padding-bottom: 10px !important;
+}
+.width-full {
+    width: 100%;
+}
+.variable-background-color {
+    background-color: var(--app-item-color);
+    --background: var(--app-item-color);
+}
+.cart-badge {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    z-index: 99;
+    border-radius: 100%;
+    min-width: 18px;
+    min-height: 18px;
+    width: 18px;
+    height: 18px;
+    font-size: 9px;
+    line-height: unset;
+}
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

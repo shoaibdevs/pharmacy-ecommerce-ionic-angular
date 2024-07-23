@@ -1,0 +1,112 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-title>{{ productName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+        <ion-badge *ngIf="cart_count !== 0" color="danger" class="cart-badge"><span class="center">{{cart_count}}</span></ion-badge>
+      </ion-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="product" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ productName}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <swiper-container
+    #swiper
+    (afterinit)="swiperReady()"
+    (slidechange)="swiperSlideChanged($event)"
+    [loop]="true"
+    [pagination]="true"
+    [zoom]="true"
+  >
+    <swiper-slide *ngFor="let img of product.images">
+      <div class="swiper-zoom-container">
+        <img [src]="img.src" class="product-image" />
+      </div>
+    </swiper-slide>
+  </swiper-container>
+
+  <ion-card class="product-card">
+    <ion-card-content>
+      <div class="product-detail">
+        <div class="label">Product Name:</div>
+        <div class="value">{{ product.name }}</div>
+      </div>
+      <div class="product-detail">
+        <div class="label">Price:</div>
+        <div class="value">
+          <del class="regular-price">₹{{ product.regular_price }}</del>&nbsp;
+          <span class="sale-price">₹{{ product.sale_price }}</span>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <h4 *ngIf="product.description"><span>Product Details</span></h4>
+  <ion-card *ngIf="product.description" class="margin-0 product-card">
+    <ion-card-content>
+      <span [innerHtml]="product.description"></span>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-item lines=none>
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-no-margin">
+        <ion-col class="ion-text-start ion-no-padding label-col">
+          <ion-label class=" font-extra-large font-bold avenir-book" color="primary">
+            {{'Quantity'}}
+          </ion-label>
+        </ion-col>
+        <ion-col class="ion-text-end ion-no-margin">
+          <ion-label class="width-full font-large padding-vertical-10">
+            <ion-chip outline=true [color]="'primary'" style="
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.50);
+            "
+              class="quantity-chip variable-background-color">
+              <ion-icon name="remove-circle" (click)="decreaseQuantity()" color="primary"></ion-icon>
+              <ion-label class="font-bold">{{ quantity }}</ion-label>
+              <ion-icon name="add-circle" (click)="increaseQuantity()" color="primary"></ion-icon>
+            </ion-chip>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+  <h4 style="margin-top: 35px;"><span>You Might Also Like</span></h4>
+  <ion-row *ngIf="relatedProducts">
+    <ion-col size="6" *ngFor="let product of relatedProducts">
+      <ion-card class="related-product-card"  [routerLink]="['/product-detail', product.id, product.name]" (click)="service.storeProduct(product)">
+        <ion-card-content>
+          <img [src]="product.images[0]?.src" alt="{{ product.title }}" class="related-product-image"/>
+          <ion-card-title style="text-align: center; font-size: 15px; margin-top: 15px;">{{ product.name }}</ion-card-title>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="!relatedProducts">
+    <ion-col size="6" *ngFor="let product of product.related_ids">
+      <ion-skeleton-text  animated class="related-product-skeleton">
+      </ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons style="margin: 15px;">
+      <ion-button (click)="addToCart()" class="width-full" fill="outline" expand="full" shape="round" color="secondary">{{ isProductInCart ? 'Update': 'Add to'}} Cart</ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-footer>

@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HomePageRoutingModule } from './home-routing.module';
+import { ProductDetailPageRoutingModule } from './product-detail-routing.module';
 
-import { HomePage } from './home.page';
+import { ProductDetailPage } from './product-detail.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
@@ -14,10 +14,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    ProductDetailPageRoutingModule
   ],
-  declarations: [HomePage],
+  declarations: [ProductDetailPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class HomePageModule {}
+export class ProductDetailPageModule {}
