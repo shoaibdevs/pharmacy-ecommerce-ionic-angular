@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ActionSheetController } from '@ionic/angular';
+import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
+import { CartService } from 'src/app/service/cart.service';
 import { Swiper } from 'swiper';
 import { register } from 'swiper/element/bundle';
-
+import { filter } from 'rxjs/operators';
 
 register();
 
@@ -20,7 +20,8 @@ export class ProductDetailPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public service: ApiService,
-    private actionSheetController: ActionSheetController,
+    public cartService: CartService,
+    private router: Router
   ) { }
   public id:any = this.route.snapshot.paramMap.get('id');
   public productName:any = this.route.snapshot.paramMap.get('productName') || 'None';
@@ -28,32 +29,63 @@ export class ProductDetailPage implements OnInit {
   public relatedProducts: any;
   public quantity: number = 0;
 
-  public cart_count: number = 0;
-  public isProductInCart: boolean = false;
-
   ngOnInit() {
-    this.loadData()
+    this.loadData();
+    this.router.events
+      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        if (event.urlAfterRedirects.includes('/product-detail')) {
+          this.updateQuantity();
+        }
+      });
   }
 
-  loadData(){
-    let data = localStorage.getItem('product')
-    if(data){
-      this.product = JSON.parse(data)
-      console.log(this.product)
+  loadProduct(loading: boolean = false){
+    if (loading) this.service.showLoading();
+    this.service.getProductsById(this.id).subscribe((res: any) => {
+      localStorage.setItem('product', JSON.stringify(res))
+      this.product = res;
+      if (loading) this.service.closeLoading();
+      this.loadRelatedProduct();
+    })
+  }
+
+  loadRelatedProduct(){
+    if(this.product){
       this.service.getRelatedProduct(this.product.related_ids).subscribe((res: any) => {
         this.relatedProducts = res;
       })
-      let cart: any = localStorage.getItem('cart');
+    }
+  }
+
+  loadData(){
+    this.quantity = 0;
+    this.product = false;
+    this.relatedProducts = false;
+    let data = localStorage.getItem('product')
+    if(data){
+      this.product = JSON.parse(data)
+      this.loadProduct();
+      this.updateQuantity();
+    } else {
+      this.loadProduct(true);
+    }
+  }
+
+  updateQuantity(){
+    let cart: any = localStorage.getItem('cart');
       if (cart) {
         cart = JSON.parse(cart);
-        this.cart_count = cart.length;
+        this.service.cart_count = cart.length;
         let productInCart = cart.find((item: any) => item.id === this.product.id);
         if (productInCart) {
           this.quantity = productInCart.quantity;
-          this.isProductInCart = true
+        }else{
+          this.quantity = 0
         }
-      } 
-    }
+      }else{
+        this.quantity = 0
+      }
   }
   swiperSlideChanged(e: any) {
     console.log('changed: ', e);
@@ -65,47 +97,25 @@ export class ProductDetailPage implements OnInit {
 
   increaseQuantity() {
     this.quantity += 1;
+    this.updateCart();
   }
 
   decreaseQuantity() {
-    if (this.quantity > 0) { // Ensure quantity does not go below 1
+    if (this.quantity > 0) {
       this.quantity -= 1;
+      this.updateCart();
     }
   }
 
-  addToCart() {
-    this.isProductInCart = true
+  addToCart(){
+    this.quantity = 1
     this.product.quantity = this.quantity;
-    let cart: any = localStorage.getItem('cart');
-  
-    if (cart) {
-      cart = JSON.parse(cart);
-  
-      let productIndex = cart.findIndex((item: any) => item.id === this.product.id);
-  
-      if (productIndex > -1) {
-        if (this.quantity === 0) {
-          cart.splice(productIndex, 1); // Remove product if quantity is 0
-          this.isProductInCart = false
-        } else {
-          cart[productIndex].quantity = this.quantity; // Update quantity if not 0
-        }
-      } else {
-        if (this.quantity > 0) {
-          cart.push(this.product); // Add product if not already in cart and quantity is greater than 0
-        }
-      }
-    } else {
-      if (this.quantity > 0) {
-        cart = [this.product]; // Create new cart with product if quantity is greater than 0
-      } else {
-        cart = []; // Ensure cart is empty if no items to add
-      }
-    }
-  
-    localStorage.setItem('cart', JSON.stringify(cart));
-    console.log(cart);
-    this.cart_count = cart.length;
+    this.cartService.addToCart(this.product);
+  }
+
+  updateCart(){
+    this.product.quantity = this.quantity;
+    this.cartService.updateCart(this.product);
   }
   
   

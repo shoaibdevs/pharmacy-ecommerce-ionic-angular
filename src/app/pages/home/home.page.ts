@@ -64,4 +64,6 @@ export class HomePage implements OnInit {
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
+  
+
 }

@@ -1,13 +1,97 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>cart</ion-title>
+    <ion-title style="text-align: center;">Cart</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">cart</ion-title>
+      <ion-title size="large">Cart</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-grid *ngIf="cart && cart.length !== 0">
+    <ion-row *ngFor="let product of cart">
+      <ion-col size="12">
+        <ion-card class="cart-card">
+          <ion-row>
+            <ion-col size="4" class="margin-0 padding-0 cart-image-container">
+              <div>
+                  <img [src]="product.images[0]?.src || 'assets/default.png'"  class="cart-image padding-0 width-full"/>
+              </div>
+            </ion-col>
+            <ion-col size="8" class="margin-0 padding-0">
+
+              <div class="product-detail">
+                <div class="label">Product Name:</div>
+                <div class="value">{{ product.name }}</div>
+              </div>
+              <div class="product-detail">
+                <div class="label">Price:</div>
+                <div class="value">
+                  <del class="regular-price">₹{{ product.regular_price }}</del>&nbsp;
+                  <span class="sale-price">₹{{ product.sale_price }}</span>
+                </div>
+              </div>
+              
+              <div class="product-detail">
+                <div class="label">Total:</div>
+                <div class="value">
+                  <span class="total_quantity_price">
+                    {{ product.quantity }} <span style="font-weight: bold;">x</span> ₹{{product.sale_price}} = 
+                  </span>
+                  <span class="total_price">
+                    ₹{{ product.quantity * product.sale_price }}
+                  </span>
+                </div>
+              </div>
+
+            </ion-col>
+            <ion-col class="margin-0 padding-0" size="12">
+              <hr style="border-top: 1px solid gray; " />
+            </ion-col>
+            <ion-col class="margin-0 padding-0" size="12">
+              <div class="product-detail" style="margin-top: 2px; margin-bottom: 0;">
+                <div class="label" (click)="updateCart(product, 'delete')">
+                  <ion-button shape="round" size="small" color="danger">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </div>
+                <div class="value">
+                      <ion-chip outline=true [color]="'primary'" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.50);"
+                        class="quantity-chip variable-background-color">
+                        <ion-icon name="remove-circle" (click)="updateCart(product, '-')" color="primary"></ion-icon>
+                        <ion-label class="font-bold">{{ product.quantity }}</ion-label>
+                        <ion-icon name="add-circle" (click)="updateCart(product, '+')" color="primary"></ion-icon>
+                      </ion-chip>
+                </div>
+                </div>
+            </ion-col>
+          </ion-row>
+          
+
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="empty-cart"  *ngIf="cart.length === 0">
+    <img src="assets/empty-cart.svg" />
+  </div>
+  <h1   *ngIf="cart.length === 0" style="text-align: center; font-weight: bold;">Your cart is currently empty!</h1>
+  <div   *ngIf="cart.length === 0" style="margin: 10px;">
+    <ion-button fill="outline" class="width-full" routerLink="/tabs/home">Go Home</ion-button>
+  </div>
+
+
 </ion-content>
+
+<ion-footer style="background-color: white;">
+    <div class="product-detail" style="margin: 20px;">
+      <div class="label" style="font-size: 1.4em;">Total:</div>
+      <div class="value sale-price" style="font-size: 1.4em;">₹{{ total }}</div>
+    </div>
+  <ion-button class="width-full">proceed to checkout</ion-button>
+</ion-footer>

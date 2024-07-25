@@ -8,9 +8,9 @@
       <ion-button (click)="presentSortSheet()">
         <ion-icon slot="icon-only" name="options-outline"></ion-icon>
       </ion-button>
-      <ion-button>
+      <ion-button routerLink="/tabs/cart">
         <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
-        <ion-badge *ngIf="cart_count !== 0" color="danger" class="cart-badge"><span class="center">{{cart_count}}</span></ion-badge>
+        <ion-badge *ngIf="service.cart_count !== 0" color="danger" class="cart-badge"><span class="center">{{service.cart_count}}</span></ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

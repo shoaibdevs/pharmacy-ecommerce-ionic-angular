@@ -52,32 +52,24 @@ export class ProductPage implements OnInit {
   ]
   public selectedSort: any;
   public page: number= 1;
-  public cart_count: number = 0;
 
   filterValue: any = this.sort[0].text;
   loadNextPage: boolean = true;
   ngOnInit() {
     if(this.id){
       this.loadData(this.filterValue)
-      let cart: any = localStorage.getItem('cart');
-      if (cart) {
-        cart = JSON.parse(cart);
-        this.cart_count = cart.length;
-      } 
     }
   }
 
   loadData(value:any){
     this.filterValue = value
-    // this.service.getProductsByCategory(this.id, this.page, this.filterValue).subscribe((res: any) => {
-    //   this.products = res
-    // })
     const productsByCategory$ = this.service.getProductsByCategory(this.id, this.page, this.filterValue);
     forkJoin([productsByCategory$]).subscribe((res: any[]) => {
       this.products = res[0];
       if(this.service.isLoading) this.service.closeLoading()
     });
   }
+  
   onIonInfinite(ev: any) {
     if(!this.loadNextPage){
       ev.target.complete();

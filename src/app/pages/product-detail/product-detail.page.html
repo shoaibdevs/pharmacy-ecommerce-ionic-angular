@@ -6,9 +6,9 @@
     
     <ion-title>{{ productName }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button routerLink="/tabs/cart">
         <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
-        <ion-badge *ngIf="cart_count !== 0" color="danger" class="cart-badge"><span class="center">{{cart_count}}</span></ion-badge>
+        <ion-badge *ngIf="service.cart_count !== 0" color="danger" class="cart-badge"><span class="center">{{service.cart_count}}</span></ion-badge>
       </ion-button>
     </ion-buttons>
   
@@ -25,13 +25,18 @@
     #swiper
     (afterinit)="swiperReady()"
     (slidechange)="swiperSlideChanged($event)"
-    [loop]="true"
     [pagination]="true"
     [zoom]="true"
+    [autoplay]="true"
   >
     <swiper-slide *ngFor="let img of product.images">
       <div class="swiper-zoom-container">
         <img [src]="img.src" class="product-image" />
+      </div>
+    </swiper-slide>
+    <swiper-slide *ngIf="product.images?.length === 0">
+      <div class="swiper-zoom-container">
+        <img [src]="'assets/default.png'" class="product-image width-full" />
       </div>
     </swiper-slide>
   </swiper-container>
@@ -60,29 +65,7 @@
   </ion-card>
 
 
-  <ion-item lines=none>
-    <ion-grid class="ion-no-padding">
-      <ion-row class="ion-no-margin">
-        <ion-col class="ion-text-start ion-no-padding label-col">
-          <ion-label class=" font-extra-large font-bold avenir-book" color="primary">
-            {{'Quantity'}}
-          </ion-label>
-        </ion-col>
-        <ion-col class="ion-text-end ion-no-margin">
-          <ion-label class="width-full font-large padding-vertical-10">
-            <ion-chip outline=true [color]="'primary'" style="
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.50);
-            "
-              class="quantity-chip variable-background-color">
-              <ion-icon name="remove-circle" (click)="decreaseQuantity()" color="primary"></ion-icon>
-              <ion-label class="font-bold">{{ quantity }}</ion-label>
-              <ion-icon name="add-circle" (click)="increaseQuantity()" color="primary"></ion-icon>
-            </ion-chip>
-          </ion-label>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
+  
 
   <h4 style="margin-top: 35px;"><span>You Might Also Like</span></h4>
   <ion-row *ngIf="relatedProducts">
@@ -102,11 +85,31 @@
     </ion-col>
   </ion-row>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="product">
   <ion-toolbar>
-    <ion-buttons style="margin: 15px;">
-      <ion-button (click)="addToCart()" class="width-full" fill="outline" expand="full" shape="round" color="secondary">{{ isProductInCart ? 'Update': 'Add to'}} Cart</ion-button>
+    <ion-item lines=none class="width-full" *ngIf="quantity !== 0">
+      <ion-grid class="ion-no-padding">
+        <ion-row class="ion-no-margin">
+          <ion-col class="ion-text-start ion-no-padding label-col">
+            <ion-label class=" font-extra-large font-bold avenir-book" color="primary">
+              {{'Quantity'}}
+            </ion-label>
+          </ion-col>
+          <ion-col class="ion-text-end ion-no-margin">
+            <ion-label class="width-full font-large padding-vertical-10">
+              <ion-chip outline=true [color]="'primary'" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.50);"
+                class="quantity-chip variable-background-color">
+                <ion-icon name="remove-circle" (click)="decreaseQuantity()" color="primary"></ion-icon>
+                <ion-label class="font-bold">{{ quantity }}</ion-label>
+                <ion-icon name="add-circle" (click)="increaseQuantity()" color="primary"></ion-icon>
+              </ion-chip>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-buttons style="margin: 15px;" *ngIf="quantity === 0">
+      <ion-button (click)="addToCart()" class="width-full" fill="outline" expand="full" shape="round" color="secondary">Add To Cart</ion-button>
     </ion-buttons>
-    
   </ion-toolbar>
 </ion-footer>
