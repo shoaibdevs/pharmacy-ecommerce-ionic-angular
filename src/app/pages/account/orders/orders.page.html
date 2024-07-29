@@ -1,0 +1,111 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">orders</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-refresher  slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid style="padding-top: 10px; padding-bottom: 0;" class="ion-grid"  >
+    <ion-card  *ngIf="orders">
+      <ion-segment class="app-segments" [(ngModel)]="filterValue" value="All" scrollable=true style="scrollbar-width: none;">
+        <ion-segment-button value="All" class="app-segments-button">
+          <ion-label class="ion-text-capitalize">{{'All'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="processing">
+          <ion-label class="ion-text-capitalize">{{'processing'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="pending">
+          <ion-label class="ion-text-capitalize">{{'pending'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="on-hold">
+          <ion-label class="ion-text-capitalize">{{'on-hold'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="completed">
+          <ion-label class="ion-text-capitalize">{{'completed'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="cancelled">
+          <ion-label class="ion-text-capitalize">{{'cancelled'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="refunded">
+          <ion-label class="ion-text-capitalize">{{'refunded'}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button  class="app-segments-button" value="failed">
+          <ion-label class="ion-text-capitalize">{{'failed'}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card>
+    <ion-card  *ngIf="!orders">
+      <ion-skeleton-text animated class="orders-toolbar-skeleton"></ion-skeleton-text>
+    </ion-card>
+  </ion-grid>
+  <ion-grid *ngIf="orders">
+    <ion-card *ngFor="let order of getData()" routerLink="/account/orders/{{order.id}}">
+      <ion-row>
+        <ion-col size="4">
+          <swiper-container
+            #swiper
+            (afterinit)="swiperReady()"
+            (slidechange)="swiperSlideChanged($event)"
+            [pagination]="true"
+            [zoom]="true"
+            [autoplay]="true"
+            [delay]="1000"
+            [disableOnInteraction]="false"
+            
+          >
+            <swiper-slide *ngFor="let item of order.line_items">
+              <div class="swiper-zoom-container">
+                <img [src]="item.image?.src || 'assets/default.png'" class="product-image br-10px" />
+              </div>
+            </swiper-slide>
+        </swiper-container>
+        </ion-col>
+        <ion-col size="8" class="order-detail-card">
+          <div class="product-detail">
+            <div class="label">Order Number:</div>
+            <div class="value">{{ order.number }}</div>
+          </div>
+          <div class="product-detail">
+            <div class="label">Order Date:</div>
+            <div class="value">{{ order.date_created | date: 'd MMM yyyy h:mm a' }}</div>
+          </div>
+          <div class="product-detail">
+            <div class="label">Total:</div>
+            <div class="value">{{ order.currency_symbol + '' + order.total }}</div>
+          </div>
+          <div class="product-detail">
+            <div class="label">Status:</div>
+            <div class="value ion-text-capitalize">{{ order.status}}</div>
+          </div>
+
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <div class="center-item">
+      <img src="assets/no-order.jpg"  *ngIf="getData().length === 0"/> 
+    </div>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more orders..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    
+  </ion-grid>
+  <ion-grid *ngIf="!orders">
+    <ion-card *ngFor="let product of [0, 1, 2, 3, 4]" style="height: 120px;">
+        <ion-skeleton-text animated class="orders-skeleton"></ion-skeleton-text>
+    </ion-card>
+  </ion-grid>
+  
+
+  
+</ion-content>

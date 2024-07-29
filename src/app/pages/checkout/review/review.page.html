@@ -1,0 +1,148 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Review</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Payment Method</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ul class="progress-indicator">
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'address'}}
+      </li>
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'shippingAddress'}}
+      </li>
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'payment'}}
+      </li>
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'review'}}
+      </li>
+    </ul>
+  </ion-card>
+  <h4 style="margin-top: 35px"><span>Review Products</span></h4>
+  <div style="height: 10px"></div>
+  <ion-grid *ngIf="cart && cart.length !== 0">
+    <ion-row *ngFor="let product of cart">
+      <ion-col size="12">
+        <ion-card class="cart-card">
+          <ion-row>
+            <ion-col size="4" class="margin-0 padding-0 cart-image-container">
+              <div>
+                <img
+                  [src]="product.images[0]?.src || 'assets/default.png'"
+                  class="cart-image padding-0 width-full"
+                />
+              </div>
+            </ion-col>
+            <ion-col size="8" class="margin-0 padding-0">
+              <div class="product-detail">
+                <div class="label">Product Name:</div>
+                <div class="value">{{ product.name }}</div>
+              </div>
+              <div class="product-detail">
+                <div class="label">Price:</div>
+                <div class="value">
+                  <del class="regular-price">₹{{ product.regular_price }}</del
+                  >&nbsp;
+                  <span class="sale-price">₹{{ product.sale_price }}</span>
+                </div>
+              </div>
+
+              <div class="product-detail">
+                <div class="label">Total:</div>
+                <div class="value">
+                  <span class="total_quantity_price">
+                    {{ product.quantity }}
+                    <span style="font-weight: bold">x</span>
+                    ₹{{product.sale_price}} =
+                  </span>
+                  <span class="total_price">
+                    ₹{{ product.quantity * product.sale_price }}
+                  </span>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <h4 style="margin-top: 35px" *ngIf="shippingAddress">
+    <span>Review Address</span>
+  </h4>
+  <div style="height: 10px" *ngIf="shippingAddress"></div>
+  <ion-card *ngIf="shippingAddress" style="border-radius: 10px">
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="2" class="ion-align-self-center center-item">
+          <ion-icon color="primary" name="pin-outline" size="large"></ion-icon>
+        </ion-col>
+        <ion-col size="10">
+          <span style="font-size: 1.2em; font-weight: bold; color: black">
+            {{ shippingAddress.state}} / {{shippingAddress.city}} </span
+          ><br />
+          {{ shippingAddress.address_1}}<br />
+          {{ shippingAddress.address_2}}
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <h4 style="margin-top: 35px"><span>Review Total</span></h4>
+  <div style="height: 10px"></div>
+  <ion-card>
+    <ion-card-content>
+      <div class="product-detail" *ngIf="shippingMethod">
+        <div class="label">Shipping Method:</div>
+        <div class="value review-total">{{ shippingMethod.method_title}}</div>
+      </div>
+      <div class="product-detail" *ngIf="mode">
+        <div class="label">Payment Method:</div>
+        <div class="value review-total">
+          {{ mode === 'cod' ? 'Cash On Delivery' : 'Razorpay'}}
+        </div>
+      </div>
+      <div class="product-detail" *ngIf="total">
+        <div class="label">Sub Total:</div>
+        <div class="value review-total">₹{{ total }}</div>
+      </div>
+      <div class="product-detail">
+        <div class="label">Estimated Shipping:</div>
+        <div class="value review-total">₹{{ shippingCharge }}</div>
+      </div>
+      <div class="product-detail" *ngIf="total">
+        <div class="label">Order Total:</div>
+        <div
+          class="value review-total"
+          style="font-size: large; color: #0054e9"
+        >
+          ₹{{ total + shippingCharge}}
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <div style="margin: 15px">
+    <ion-button expand="block" (click)="placeOrder()">Place Order</ion-button>
+  </div>
+</ion-content>

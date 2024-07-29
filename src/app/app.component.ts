@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { register } from 'swiper/element/bundle';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 register();
 @Component({
@@ -12,9 +13,15 @@ export class AppComponent {
   constructor(
     private router: Router
   ) {
-    let token  = localStorage.getItem('token')
-    if(token){
-      this.router.navigateByUrl('/tabs/home')
-    }
+    this.splash()
+
+  }
+
+
+  async splash(){
+    await SplashScreen.show({
+      showDuration: 2000,
+      autoHide: true,
+    });
   }
 }

@@ -1,0 +1,40 @@
+
+
+
+
+.ion-grid {
+    border-radius: var(--app-round-border-value) !important;
+    --border-radius: var(--app-round-border-value) !important;
+    overflow: hidden;
+}
+
+.app-segments-button{
+    width: 130px;
+}
+.product-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+.label {
+font-weight: bold;
+color: #222;
+}
+
+.value {
+color: #555;
+}
+.order-detail-card {
+    padding: 10px;
+}
+
+.orders-skeleton{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+.orders-toolbar-skeleton {
+    height: 48px;
+    margin: 0;
+}

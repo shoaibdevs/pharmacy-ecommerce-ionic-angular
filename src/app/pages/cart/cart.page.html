@@ -77,21 +77,21 @@
     </ion-row>
   </ion-grid>
 
-  <div class="empty-cart"  *ngIf="cart.length === 0">
+  <div class="empty-cart"  *ngIf="emptyCart">
     <img src="assets/empty-cart.svg" />
   </div>
-  <h1   *ngIf="cart.length === 0" style="text-align: center; font-weight: bold;">Your cart is currently empty!</h1>
-  <div   *ngIf="cart.length === 0" style="margin: 10px;">
+  <h1   *ngIf="emptyCart" style="text-align: center; font-weight: bold;">Your cart is currently empty!</h1>
+  <div   *ngIf="emptyCart" style="margin: 10px;">
     <ion-button fill="outline" class="width-full" routerLink="/tabs/home">Go Home</ion-button>
   </div>
 
 
 </ion-content>
 
-<ion-footer style="background-color: white;">
+<ion-footer *ngIf="cart && cart.length !== 0" style="background-color: white;">
     <div class="product-detail" style="margin: 20px;">
       <div class="label" style="font-size: 1.4em;">Total:</div>
       <div class="value sale-price" style="font-size: 1.4em;">₹{{ total }}</div>
     </div>
-  <ion-button class="width-full">proceed to checkout</ion-button>
+  <ion-button class="width-full" routerLink="/checkout/shipping-address">proceed to checkout</ion-button>
 </ion-footer>

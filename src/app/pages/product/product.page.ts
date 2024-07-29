@@ -101,6 +101,7 @@ export class ProductPage implements OnInit {
 
 
   async presentSortSheet() {
+
     const buttons = this.sort.map(option => ({
       text: option.title,
       handler: () => {

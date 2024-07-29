@@ -41,17 +41,17 @@ export class ProductDetailPage implements OnInit {
   }
 
   loadProduct(loading: boolean = false){
-    if (loading) this.service.showLoading();
+    if (loading) this.service.showLoading(); this.service.isLoading = true;
     this.service.getProductsById(this.id).subscribe((res: any) => {
       localStorage.setItem('product', JSON.stringify(res))
       this.product = res;
-      if (loading) this.service.closeLoading();
+      if (loading) this.service.closeLoading();this.service.isLoading = false;
       this.loadRelatedProduct();
     })
   }
 
   loadRelatedProduct(){
-    if(this.product){
+    if(this.product && this.product.related_ids.length !== 0){
       this.service.getRelatedProduct(this.product.related_ids).subscribe((res: any) => {
         this.relatedProducts = res;
       })

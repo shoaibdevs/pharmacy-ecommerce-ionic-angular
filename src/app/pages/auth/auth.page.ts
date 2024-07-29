@@ -4,6 +4,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/service/api.service';
+import { ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Event } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -14,7 +17,6 @@ export class AuthPage implements OnInit {
   screen: any = 'signin';
   loginForm: FormGroup;
   registerForm: FormGroup;
-
   loginError: any;
   registerError: any;
 
@@ -36,6 +38,19 @@ export class AuthPage implements OnInit {
     private service: ApiService,
     private router: Router
   ) {
+    this.router.events
+      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        if (event.urlAfterRedirects.includes('/product-detail')) {
+          let token  = localStorage.getItem('token')
+    if(token){
+      this.router.navigateByUrl('/tabs/home')
+      
+    }else{
+      this.router.navigateByUrl('/auth')
+    }
+        }
+      });
     this.loginForm = this.fb.group({
       username: ['',[Validators.required]],
       password: ['',[Validators.required]],
@@ -69,6 +84,7 @@ export class AuthPage implements OnInit {
       this.service.login(this.loginForm.value).subscribe((res:any)=>{
         console.log(res);
         this.service.closeLoading()
+        this.service.isLoading = false
         if(res.cookie){
           localStorage.setItem('token', res.cookie)
           localStorage.setItem('userData', JSON.stringify(res.user))
@@ -81,6 +97,7 @@ export class AuthPage implements OnInit {
           this.loginError = err.error.message;
         }
         this.service.closeLoading()
+        this.service.isLoading = false
       });
     }  else {
       this.service.showSnak("All fields are required!")
@@ -106,6 +123,7 @@ export class AuthPage implements OnInit {
           this.service.login(loginDetail).subscribe((res:any)=>{
             console.log(res);
             this.service.closeLoading()
+            this.service.isLoading = false
             if(res.cookie){
               localStorage.setItem('token', res.cookie)
               localStorage.setItem('userData', JSON.stringify(res.user))
@@ -118,6 +136,7 @@ export class AuthPage implements OnInit {
               this.registerError = err.error.message;
             }
             this.service.closeLoading()
+            this.service.isLoading = false
           });
         } 
       },(err: any) => {
@@ -126,6 +145,7 @@ export class AuthPage implements OnInit {
           this.registerError = err.error.message;
         }
         this.service.closeLoading()
+        this.service.isLoading = false
       })
     } else {
       this.service.showSnak("All fields are required!")

@@ -67,12 +67,12 @@
 
   
 
-  <h4 style="margin-top: 35px;"><span>You Might Also Like</span></h4>
+  <h4 style="margin-top: 35px;" *ngIf="product.related_ids.length !== 0"><span>You Might Also Like</span></h4>
   <ion-row *ngIf="relatedProducts">
     <ion-col size="6" *ngFor="let product of relatedProducts">
       <ion-card class="related-product-card"  [routerLink]="['/product-detail', product.id, product.name]" (click)="service.storeProduct(product)">
         <ion-card-content>
-          <img [src]="product.images[0]?.src" alt="{{ product.title }}" class="related-product-image"/>
+          <img [src]="product.images[0]?.src || 'assets/default.png'" alt="{{ product.title }}" class="related-product-image"/>
           <ion-card-title style="text-align: center; font-size: 15px; margin-top: 15px;">{{ product.name }}</ion-card-title>
         </ion-card-content>
       </ion-card>

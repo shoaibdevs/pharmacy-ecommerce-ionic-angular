@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payment Method</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Payment Method</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ul class="progress-indicator">
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'address'}}
+      </li>
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'shipping'}}
+      </li>
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'payment'}}
+      </li>
+      <li [class.completed]="false">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'review'}}
+      </li>
+    </ul>
+  </ion-card>
+  <h4 style="margin-top: 35px;" ><span>Payment Method</span></h4>
+  <div style="height: 10px;"></div>
+
+  <ion-card class="icon-card" [routerLink]="['/checkout/review']" [queryParams]="{ mode: 'cod' }">
+    <ion-card-content class="card-content">
+      <ion-icon style="color: black;" size="large" name="cash-outline"></ion-icon>&nbsp;&nbsp;&nbsp;
+      <span>
+        Cash On Delivery
+      </span>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="icon-card" [routerLink]="['/checkout/review']" [queryParams]="{ mode: 'online' }">
+    <ion-card-content class="card-content">
+      <img src="assets/razorpay.png"  style="height: 20px;"/>&nbsp;&nbsp;&nbsp;
+      <span>
+        Online Payment
+      </span>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

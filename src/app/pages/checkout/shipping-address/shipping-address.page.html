@@ -1,0 +1,153 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Shipping Address</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Shipping Address</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ul class="progress-indicator">
+      <li [class.completed]="true">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'address'}}
+      </li>
+      <li [class.completed]="false">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'shipping'}}
+      </li>
+      <li [class.completed]="false">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'payment'}}
+      </li>
+      <li [class.completed]="false">
+        <span class="bubble">
+          <!-- <div class="dot"></div> -->
+        </span>
+        {{'review'}}
+      </li>
+    </ul>
+  </ion-card>
+  <h4 style="margin-top: 35px;" ><span>Shipping Address</span></h4>
+  <div style="height: 10px;"></div>
+  <ion-card>
+    <form [formGroup]="addressForm">
+      <div class="shipping-address-input">
+        <ion-input
+          label="* First Name"
+          label-placement="floating"
+          fill="outline"
+          aria-autocomplete=""
+          required
+          formControlName="first_name"
+          name="first_name"
+          placeholder="Enter Your First Name"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* Last Name"
+          label-placement="floating"
+          fill="outline"
+          required
+          formControlName="last_name"
+          placeholder="Enter Your Last Name"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* Email Id"
+          label-placement="floating"
+          fill="outline"
+          type="email"
+          required
+          formControlName="email"
+          placeholder="Enter Your Email Id"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* Phone Number"
+          label-placement="floating"
+          fill="outline"
+          type="text"
+          pattern="^[0-9]{10}$"
+          class="custom-number-input"
+          maxlength="10"
+          required
+          formControlName="phone"
+          placeholder="Enter Your Phone Number"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* State"
+          label-placement="floating"
+          fill="outline"
+          required
+          formControlName="state"
+          placeholder="Enter Your State"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* City"
+          label-placement="floating"
+          fill="outline"
+          required
+          formControlName="city"
+          placeholder="Enter Your City"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* Address Line 1"
+          label-placement="floating"
+          fill="outline"
+          required
+          formControlName="address_1"
+          placeholder="Enter Your Address Line 1"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="Address Line 2"
+          label-placement="floating"
+          fill="outline"
+          formControlName="address_2"
+          placeholder="Enter Your Address Line 2"
+        ></ion-input>
+      </div>
+      <div class="shipping-address-input">
+        <ion-input
+          label="* Postcode"
+          label-placement="floating"
+          fill="outline"
+          type="Number"
+          required
+          formControlName="postcode"
+          placeholder="Enter Your Postcode"
+        ></ion-input>
+      </div>
+    </form>
+  </ion-card>
+  <ion-card>
+  <ion-button class="width-full" (click)="continue()" routerLink="/checkout/shipping-address">Continue</ion-button>
+  </ion-card>
+</ion-content>
+<ion-footer style="background-color: white;">
+
+</ion-footer>

@@ -62,4 +62,10 @@ export class CartService {
     console.log(cart);
     this.service.cart_count = cart.length;
   }
+
+
+  getCartTotal(){
+    let cart = this.getCart()
+    return cart.reduce((acc: any, item: any) => acc + item.quantity * item.sale_price, 0);
+  }
 }

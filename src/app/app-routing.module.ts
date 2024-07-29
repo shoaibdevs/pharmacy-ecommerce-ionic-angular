@@ -33,6 +33,27 @@ const routes: Routes = [
   {
     path: 'product-detail',
     loadChildren: () => import('./pages/product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
+  },
+  {
+    path: 'checkout',
+    children: [
+      {
+        path: 'shipping-address',
+        loadChildren: () => import('./pages/checkout/shipping-address/shipping-address.module').then( m => m.ShippingAddressPageModule)
+      },
+      {
+        path: 'shipping-method',
+        loadChildren: () => import('./pages/checkout/shipping-method/shipping-method.module').then( m => m.ShippingMethodPageModule)
+      },
+      {
+        path: 'payment',
+        loadChildren: () => import('./pages/checkout/payment/payment.module').then( m => m.PaymentPageModule)
+      },
+      {
+        path: 'review',
+        loadChildren: () => import('./pages/checkout/review/review.module').then( m => m.ReviewPageModule)
+      }
+    ]
   }
 ];
 @NgModule({

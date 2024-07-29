@@ -1,3 +1,6 @@
+ion-content{
+    --background: white;
+}
 .heading{
     font-size: 32px;
     font-weight: bold;
@@ -70,6 +73,7 @@ ion-footer {
 }
 .copyright{
     text-align: center;
+    font-weight: bold;
 }    
 
 .error {

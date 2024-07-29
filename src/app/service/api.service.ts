@@ -56,8 +56,12 @@ export class ApiService {
   }
 
   closeLoading(){
-    this.loadingCtrl.dismiss()
-    this.isLoading = false;
+    if(this.isLoading){
+      console.log("Loading close")
+      this.loadingCtrl.dismiss()
+      this.isLoading = false;
+    }
+
   }
 
   getBanner(){
@@ -82,6 +86,14 @@ export class ApiService {
     return this.http.get(`https://www.sommedicose.com/wp-json/wc/v3/products?include=${id.join(',')}&`+this.key)
   }
 
+  getShippingMethod(){
+    return this.http.get(`https://www.sommedicose.com/wp-json/wc/v3/shipping/zones/0/methods?lang=en&currency=INR&`+this.key)
+  }
+
+  getPaymentMethod() {
+    return this.http.get(`https://www.sommedicose.com/wp-json/wc/v3/payment_gateways?lang=en&currency=INR&`+this.key)
+  }
+
 
   register(data: any){
     return this.http.post(`https://www.sommedicose.com/wp-json/api/tc_user/register/?insecure=cool`, data)
@@ -91,6 +103,22 @@ export class ApiService {
     return this.http.post(`https://www.sommedicose.com/wp-json/api/tc_user/generate_cookie/?insecure=cool`, data)
   }
 
+  createOrder(data: any){
+    return this.http.post(`https://www.sommedicose.com/wp-json/wc/v3/orders?`+this.key, data)
+  }
+
+
+  getOrders(page: number) {
+    let user: any = localStorage.getItem('userData')
+    user = JSON.parse(user)
+    return this.http.get(`https://www.sommedicose.com/wp-json/wc/v3/orders/?page=${page}&customer=${user.id}&lang=en&currency=INR&`+this.key)
+  }
+
+  getOrderById(id: number) {
+    let user: any = localStorage.getItem('userData')
+    user = JSON.parse(user)
+    return this.http.get(`https://www.sommedicose.com/wp-json/wc/v3/orders/${id}?customer=${user.id}&`+this.key)
+  }
   
 
 }

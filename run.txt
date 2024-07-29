@@ -1,0 +1,2 @@
+./gradlew assembleDebug
+ionic capacitor run android -l --external

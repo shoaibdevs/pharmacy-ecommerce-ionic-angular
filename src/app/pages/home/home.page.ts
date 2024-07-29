@@ -3,6 +3,9 @@ import { Swiper } from 'swiper';
 import { ApiService } from 'src/app/service/api.service';
 import { register } from 'swiper/element/bundle';
 import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Event } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 register();
 
@@ -18,12 +21,26 @@ export class HomePage implements OnInit {
 
  
   constructor(
-    public service: ApiService
+    public service: ApiService,
+    public router: Router
   ) { }
   bannerData: any;
   categories: any[] = [];
   topRatedProducts: any;
   ngOnInit() {
+    this.router.events
+      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        if (event.urlAfterRedirects.includes('/product-detail')) {
+          let token  = localStorage.getItem('token')
+    if(token){
+      this.router.navigateByUrl('/tabs/home')
+      
+    }else{
+      this.router.navigateByUrl('/auth')
+    }
+        }
+      });
     this.loadData();
   }
 

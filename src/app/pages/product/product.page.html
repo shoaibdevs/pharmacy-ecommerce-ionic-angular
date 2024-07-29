@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>{{ categoryName }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="presentSortSheet()">
+      <ion-button [disabled]="!products" (click)="presentSortSheet()">
         <ion-icon slot="icon-only" name="options-outline"></ion-icon>
       </ion-button>
       <ion-button routerLink="/tabs/cart">
@@ -25,7 +25,11 @@
       <ion-title size="large">Product</ion-title>
     </ion-toolbar>
   </ion-header>
-
+  <ion-chip class="selected-sort" *ngIf="selectedSort" color="secondary">
+    <ion-label>{{selectedSort.title}}</ion-label>
+    <ion-icon (click)="removeSort()" name="close"></ion-icon>
+  </ion-chip>
+  
   <ion-grid>
     <ion-row *ngIf="products">
       <ion-col size="6" *ngFor="let product of products">

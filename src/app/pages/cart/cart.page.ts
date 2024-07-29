@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {  Router, NavigationEnd, Event } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { filter } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import { filter, finalize } from 'rxjs/operators';
 import { ApiService } from 'src/app/service/api.service';
 
 @Component({
@@ -10,8 +11,9 @@ import { ApiService } from 'src/app/service/api.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  cart: any[] = [];
+  cart: any;
   public total: number = 0;
+  emptyCart  = false;
   constructor(
     public service: ApiService,
     private alertController: AlertController,
@@ -29,14 +31,46 @@ export class CartPage implements OnInit {
   }
 
   loadCart() {
-    let cart = localStorage.getItem('cart');
+    this.emptyCart = false
+    let cart:any = localStorage.getItem('cart');
     if (cart) {
-      this.cart = JSON.parse(cart);
-      this.calculateTotal();
+      cart = JSON.parse(cart);
+      this.loadProduct(cart);
+      if (cart.length == 0) {
+        this.cart = false; this.emptyCart = true
+      }
+    } else {
+      this.cart = false;
+      this.emptyCart = true
     }
   }
 
-
+  loadProduct(cartData:any) {
+    let ids = cartData?.map((product:any) => product.id);
+    this.service.showLoading();
+    this.service.isLoading = true;
+    const productsByCategory$ = this.service.getRelatedProduct(ids);
+    forkJoin([productsByCategory$]).subscribe((res: any[]) => {
+      console.log("Products", res[0]);
+      const productMap = new Map(res[0].map((product: any) => [product.id, product]));
+      this.cart = cartData.map((cartProduct: any) => {
+        const productData = productMap.get(cartProduct.id);
+        if (productData) {
+          return {
+            ...cartProduct,
+            ...productData,
+            quantity: cartProduct.quantity
+          };
+        }
+        return cartProduct;
+      });
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+      this.calculateTotal();
+      this.service.closeLoading(); 
+      this.service.isLoading=false
+    });
+  }
+  
   updateCart(product: any, method: string) {
     let cart: any = localStorage.getItem('cart');
     if (cart) {
@@ -88,7 +122,7 @@ export class CartPage implements OnInit {
   }
 
   removeFromCart(product: any) {
-    const productIndex = this.cart.findIndex(item => item.id === product.id);
+    const productIndex = this.cart.findIndex((item: any) => item.id === product.id);
     if (productIndex > -1) {
       this.cart.splice(productIndex, 1);
       localStorage.setItem('cart', JSON.stringify(this.cart));
@@ -97,7 +131,7 @@ export class CartPage implements OnInit {
     }
   }
   calculateTotal() {
-    this.total = this.cart.reduce((acc, item) => acc + item.quantity * item.sale_price, 0);
+    this.total = this.cart.reduce((acc: any, item: any) => acc + item.quantity * item.sale_price, 0);
   }
 
 }
