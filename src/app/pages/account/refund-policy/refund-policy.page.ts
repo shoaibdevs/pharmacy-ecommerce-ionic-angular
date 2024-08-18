@@ -11,5 +11,11 @@ export class RefundPolicyPage implements OnInit {
 
   ngOnInit() {
   }
+  isLoading = true;
+
+
+  onIframeLoad() {
+    this.isLoading = false;
+  }
 
 }

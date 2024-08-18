@@ -277,3 +277,34 @@ ion-content{
 .br-10px{
     border-radius: 10px;
 }
+.full-h-w{
+    height: 100%;
+    width: 100%;
+}
+.content {
+    height: 100%;
+  }
+  
+iframe{
+
+    overflow-clip-margin: content-box !important;
+    overflow: clip !important;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+    height: 100%;
+    width: 100%;
+    border: 0;
+}
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .hidden {
+    display: none;
+  }
+  

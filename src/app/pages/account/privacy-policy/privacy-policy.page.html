@@ -6,10 +6,24 @@
     <ion-title>Privacy Policy</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
+
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">privacy-policy</ion-title>
+      <ion-title size="large">Privacy Policy</ion-title>
     </ion-toolbar>
   </ion-header>
+
+    <ion-spinner *ngIf="isLoading" class="loading-spinner"></ion-spinner>
+  <div class="iframe-container full-h-w"  [class.hidden]="isLoading">
+    <iframe 
+
+      scrolling="auto"
+      src="https://www.sommedicose.com/privacy-policy/" 
+      sandbox="allow-same-origin allow-scripts" 
+      class="responsive-iframe" (load)="onIframeLoad()">
+    </iframe>
+  </div>
 </ion-content>
+
+<!-- https://www.sommedicose.com/privacy-policy/ -->

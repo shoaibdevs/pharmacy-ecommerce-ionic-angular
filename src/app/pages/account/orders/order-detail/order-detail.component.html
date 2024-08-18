@@ -52,6 +52,8 @@
                   </span>
                 </div>
               </div>
+
+              
             </ion-col>
           </ion-row>
         </ion-card>
@@ -89,7 +91,18 @@
           {{ order.payment_method_title === 'cod' ? 'Cash On Delivery' : 'Razorpay'}}
         </div>
       </div>
-
+      <div class="product-detail" *ngIf="!order.needs_payment">
+        <div class="label">Paid:</div>
+        <div class="value ion-text-capitalize">{{ !order.needs_payment }}</div>
+      </div>
+      <div class="product-detail" *ngIf="!order.needs_payment">
+        <div class="label">Date Paid:</div>
+        <div class="value ">{{ order.date_paid  | date: 'd MMM yyyy h:mm a' }}</div>
+      </div>
+      <div class="product-detail">
+        <div class="label">Date Created:</div>
+        <div class="value">{{ order.date_created  | date: 'd MMM yyyy h:mm a'  }}</div>
+      </div>
       <div class="product-detail" >
         <div class="label">Order Total:</div>
         <div

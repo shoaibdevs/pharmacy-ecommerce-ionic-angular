@@ -28,19 +28,8 @@ export class HomePage implements OnInit {
   categories: any[] = [];
   topRatedProducts: any;
   ngOnInit() {
-    this.router.events
-      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        if (event.urlAfterRedirects.includes('/product-detail')) {
-          let token  = localStorage.getItem('token')
-    if(token){
-      this.router.navigateByUrl('/tabs/home')
-      
-    }else{
-      this.router.navigateByUrl('/auth')
-    }
-        }
-      });
+
+
     this.loadData();
   }
 

@@ -11,5 +11,11 @@ export class PrivacyPolicyPage implements OnInit {
 
   ngOnInit() {
   }
+  isLoading = true;
+
+
+  onIframeLoad() {
+    this.isLoading = false;
+  }
 
 }

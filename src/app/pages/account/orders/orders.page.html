@@ -85,6 +85,10 @@
             <div class="value">{{ order.currency_symbol + '' + order.total }}</div>
           </div>
           <div class="product-detail">
+            <div class="label">Paid:</div>
+            <div class="value ion-text-capitalize">{{ !order.needs_payment }}</div>
+          </div>
+          <div class="product-detail">
             <div class="label">Status:</div>
             <div class="value ion-text-capitalize">{{ order.status}}</div>
           </div>

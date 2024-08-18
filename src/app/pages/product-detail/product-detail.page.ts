@@ -74,18 +74,18 @@ export class ProductDetailPage implements OnInit {
 
   updateQuantity(){
     let cart: any = localStorage.getItem('cart');
-      if (cart) {
-        cart = JSON.parse(cart);
-        this.service.cart_count = cart.length;
-        let productInCart = cart.find((item: any) => item.id === this.product.id);
-        if (productInCart) {
-          this.quantity = productInCart.quantity;
-        }else{
-          this.quantity = 0
-        }
+    if (cart) {
+      cart = JSON.parse(cart);
+      this.service.cart_count = cart.length;
+      let productInCart = cart.find((item: any) => item.id === this.product.id);
+      if (productInCart) {
+        this.quantity = productInCart.quantity;
       }else{
         this.quantity = 0
       }
+    }else{
+      this.quantity = 0
+    }
   }
   swiperSlideChanged(e: any) {
     console.log('changed: ', e);

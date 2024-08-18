@@ -4,7 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
 import { filter, finalize } from 'rxjs/operators';
 import { ApiService } from 'src/app/service/api.service';
-
+import { Platform } from '@ionic/angular';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -17,7 +17,9 @@ export class CartPage implements OnInit {
   constructor(
     public service: ApiService,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private platform: Platform,
+
   ) {}
 
   ngOnInit() {
@@ -28,6 +30,8 @@ export class CartPage implements OnInit {
           this.loadCart();
         }
       });
+     
+  
   }
 
   loadCart() {
@@ -35,9 +39,10 @@ export class CartPage implements OnInit {
     let cart:any = localStorage.getItem('cart');
     if (cart) {
       cart = JSON.parse(cart);
-      this.loadProduct(cart);
       if (cart.length == 0) {
         this.cart = false; this.emptyCart = true
+      }else{
+        this.loadProduct(cart);
       }
     } else {
       this.cart = false;
@@ -133,5 +138,15 @@ export class CartPage implements OnInit {
   calculateTotal() {
     this.total = this.cart.reduce((acc: any, item: any) => acc + item.quantity * item.sale_price, 0);
   }
+
+  checkout(){
+    let token  = localStorage.getItem('token')
+    if(token){
+      this.router.navigateByUrl('/checkout/shipping-address')
+    }else{
+      this.router.navigateByUrl('/auth?returnUrl=/tabs/cart')
+    }
+  }
+
 
 }

@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/service/api.service';
 import { ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Event } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-auth',
@@ -36,7 +37,9 @@ export class AuthPage implements OnInit {
   constructor(
     private fb:FormBuilder,
     private service: ApiService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
   ) {
     this.router.events
       .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
@@ -88,7 +91,9 @@ export class AuthPage implements OnInit {
         if(res.cookie){
           localStorage.setItem('token', res.cookie)
           localStorage.setItem('userData', JSON.stringify(res.user))
-          this.router.navigateByUrl('/tabs/home')
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/tabs/home';
+          window.location.href = returnUrl
+          
         }else{
         }
       },(err: any) => {
@@ -127,7 +132,11 @@ export class AuthPage implements OnInit {
             if(res.cookie){
               localStorage.setItem('token', res.cookie)
               localStorage.setItem('userData', JSON.stringify(res.user))
-              this.router.navigateByUrl('/tabs/home')
+              const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/tabs/home';
+              
+              
+              this.location.historyGo(returnUrl)
+              
             }else{
             }
           },(err: any) => {

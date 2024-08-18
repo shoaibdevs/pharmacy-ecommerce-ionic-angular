@@ -10,27 +10,19 @@
       <ion-title size="large">Account</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card class="icon-card" routerLink="/account/profile">
+  <!-- <ion-card class="icon-card" routerLink="/account/profile">
     <ion-card-content class="card-content">
       <ion-icon size="large" name="person-circle-outline"></ion-icon>
       <span>
         Profile
       </span>
     </ion-card-content>
-  </ion-card>
-  <ion-card class="icon-card" routerLink="/account/orders">
+  </ion-card> -->
+  <ion-card *ngIf="token" class="icon-card" routerLink="/account/orders">
     <ion-card-content class="card-content">
       <ion-icon size="large" name="list-outline"></ion-icon>
       <span>
         Orders
-      </span>
-    </ion-card-content>
-  </ion-card>
-  <ion-card class="icon-card" routerLink="/account/contact-us">
-    <ion-card-content class="card-content">
-      <ion-icon size="large" name="help-circle-outline"></ion-icon>
-      <span>
-        Contact Us
       </span>
     </ion-card-content>
   </ion-card>
@@ -50,7 +42,7 @@
       </span>
     </ion-card-content>
   </ion-card>
-  <ion-card class="icon-card" routerLink="/account/privacy-policy">
+  <ion-card class="icon-card" routerLink="/account/refund-policy">
     <ion-card-content class="card-content">
       <ion-icon name="return-down-back-outline" size="large"></ion-icon>
       <span>
@@ -69,7 +61,7 @@
   <div style="padding: 20px;">
     <ion-button fill="outline" class="width-full" size="small"  (click)="logout()">
       <ion-icon color="primary" name="log-out-outline" size="large"></ion-icon>&nbsp;&nbsp;
-      Logout
+      {{ token ? 'Logout' : 'Login'}}
     </ion-button>
   </div>
 </ion-content>

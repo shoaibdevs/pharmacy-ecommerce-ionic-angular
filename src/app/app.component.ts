@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Platform } from '@ionic/angular';
+import { Router, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
 
 register();
 @Component({
@@ -11,10 +13,20 @@ register();
 })
 export class AppComponent {
   constructor(
-    private router: Router
+    private router: Router,
+    private platform: Platform,
+    private location: Location
   ) {
     this.splash()
-
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      if (this.router.url.includes('/tabs/cart' || '/tabs/account'|| '/tabs/category')) {
+        // Replace the current navigation with the home page route
+        this.router.navigate(['/tabs/home'], { replaceUrl: true });
+      } else {
+        // Otherwise, perform the default back action
+        this.location.back();
+      }
+  });
   }
 
 

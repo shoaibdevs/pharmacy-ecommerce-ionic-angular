@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactUsPage implements OnInit {
 
-  constructor() { }
+  constructor() {}
+
 
   ngOnInit() {
+  }
+  isLoading = true;
+
+
+  onIframeLoad() {
+    this.isLoading = false;
   }
 
 }
