@@ -1,4 +1,7 @@
 <ion-content [fullscreen]="true">
+  <div class="center-item " style="margin-top: 15%;">
+    <img src="assets/logo.png" />
+  </div>
 
   <!-- Login Page -->
   <div class="container"  *ngIf="screen === 'signin'">
@@ -77,20 +80,19 @@
   <div class="container"  *ngIf="screen === 'forget'">
     <h1 class="heading">Forget Password?<br><br></h1>
     <p class="para">Enter email to reset</p>
-    <ion-item lines="none" class="ion-item">
-      <fieldset  class="input-item">
-        <legend>Email Id</legend> 
-        <ion-input type="email" placeholder="Enter Your Email Id" required></ion-input>
-      </fieldset>
-    </ion-item>
-    <p class="signup-text">Rememberd Password&nbsp;<a (click)="change('signin')">Sign In?</a></p>
-    <ion-button class="login-button" expand="block">Reset Password</ion-button>
-  </div>
+    <form [formGroup]="resetPasswordForm">
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Email Id</legend> 
+          <ion-input formControlName="email" type="email" placeholder="Enter Your Email Id" required></ion-input>
+
+        </fieldset>
+      </ion-item>
+      <p class="signup-text">Rememberd Password&nbsp;<a (click)="change('signin')">Sign In?</a></p>
+      <ion-button class="login-button" expand="block" (click)="resetPassword()">Reset Password</ion-button>
+ 
+    </form>
+       </div>
 
 
 </ion-content>
-<ion-footer color="white">
-  <ion-toolbar>
-    <p class="copyright">Som Medicose</p>
-  </ion-toolbar>
-</ion-footer>

@@ -18,22 +18,13 @@ export class AuthPage implements OnInit {
   screen: any = 'signin';
   loginForm: FormGroup;
   registerForm: FormGroup;
+  resetPasswordForm: FormGroup;
   loginError: any;
   registerError: any;
 
 
   isLoading: boolean = false;
-   newd = {
-    "email": "teslkfaksdajfdksaj@gmail.com",
-    "password": "shoaib123",
-    "first_name": "shoaib",
-    "last_name": "khan",
-    "username": "shoaibkhan",
-    "confirm_password": "shoaib123",
-    "wpgdprc": 1,
-    "register": "Register",
-    "display_name": "shoaib khan"
-}
+
   constructor(
     private fb:FormBuilder,
     private service: ApiService,
@@ -65,6 +56,9 @@ export class AuthPage implements OnInit {
       username: ['',[Validators.required]],
       password: ['',[Validators.required]],
       confirm_password: ['',[Validators.required]],
+    })
+    this.resetPasswordForm = this.fb.group({
+      email: ['',[Validators.required, Validators.email]],
     })
   }
 
@@ -159,5 +153,19 @@ export class AuthPage implements OnInit {
     } else {
       this.service.showSnak("All fields are required!")
     }
+  }
+
+  resetPassword(){
+    // if(this.resetPasswordForm.valid){
+    //   this.service.showLoading()
+    //   this.loginError = false
+    //   this.isLoading = true
+    //   this.service.lostPassword(this.resetPasswordForm.value).subscribe((res:any)=>{
+    //     console.log(res)
+    //   })
+    // } else {
+    //   this.service.showSnak("All fields are required!")
+
+    // }
   }
 }

@@ -119,6 +119,10 @@ export class ApiService {
     user = JSON.parse(user)
     return this.http.get(`https://www.sommedicose.com/wp-json/wc/v3/orders/${id}?customer=${user.id}&`+this.key)
   }
+
+  lostPassword(data: any){
+    return this.http.post(`https://www.sommedicose.com/api/client/lost-password`, data)
+  }
   
 
 }
